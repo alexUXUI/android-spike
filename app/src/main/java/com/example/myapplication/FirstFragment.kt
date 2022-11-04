@@ -20,20 +20,26 @@ class FirstFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    // Regression!
+    private fun fibonacciFoldDebug(n: Int) =
+        (2 until n).fold(1 to 1) { (prev, curr), _ ->
+            println("prev=$prev, curr=$curr")
+            curr to (prev + curr)
+        }.second
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.buttonFirst.setOnClickListener {
+            // Slow the app down
+            fibonacciFoldDebug(10000)
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
